@@ -7,7 +7,7 @@
     <style>
         .card {
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            max-width: 300px;
+            max-width: 400px;
             margin: auto;
             text-align: center;
             font-family: arial;
@@ -60,5 +60,37 @@
         <p>
             <button class="but">Contact</button>
         </p>
+    </div>
+    <hr>
+    <div class="card" style="margin: auto;
+width: 60%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);padding: 28px;">
+        <div class="container" >
+
+            <div class="image" style="background: yellow;">
+
+                <h2 style="justify-content: center">C O N T A C T &nbsp;&nbsp; N O W</h2>
+
+            </div>
+        </div>
+
+        <br>
+        <div class="container align-content-md-center" >
+
+            <form action="{{ url_for('submit_contact_message') }}" method="post">
+                <div class="mb-3">
+                    <label for="user_name" class="form-label">Username</label>
+                    <input type="text" name="user_name" class="form-control" id="user_name" aria-describedby="emailHelp">
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Your Message</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                              placeholder="Write your message here" name="message_text"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+
     </div>
 {% endblock %}

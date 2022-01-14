@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %} All Contact Message {% endblock %}
+
+{% block body %}
+
+
+    <div class="container">
+
+        <div class="container" style="">
+
+            <div class="image" style="background: rgba(239,61,135,0.96);">
+                <h2 style="justify-content: center">C O N T A C T &nbsp;&nbsp; M E S S A G E </h2>
+            </div>
+
+        </div>
+        <br>
+        <br>
+        {% for x in  contact_message %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for r in x %}
+
+
+                    <div class="col">
+                        <div class="card border-primary mb-3" style="max-width: 24rem;">
+                            <div class="card-header">{{ r['when'] }}</div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ r['username'] }}</h5>
+                                <p class="card-text">{{ r['message_text'] }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

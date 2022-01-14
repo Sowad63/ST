@@ -17,11 +17,10 @@ from flask import request
 from werkzeug.utils import secure_filename
 from urllib.parse import quote, unquote
 
-
 from server import app
 
 app.secret_key = os.urandom(32)
-
+print(sys.path[0])
 cred = credentials.Certificate(os.path.realpath("creds.json"))
 firebase_admin.initialize_app(cred)
 
@@ -113,7 +112,7 @@ def parse_first_image(file_path: str):
 @app.route('/upload_pdf', methods=['POST'])
 def upload_pdf():
     f = request.files
-    print(f['pdf'])
+    # print(f['pdf'])
     filename = secure_filename(f['pdf'].filename).lstrip().rstrip()
     if filename:
         full_file_path = os.path.realpath(os.path.join('static', 'pdf', "{}".format(filename)))
@@ -239,7 +238,49 @@ def submit_review():
     doc_ref = db.collection(u'user-review').document(u'{}'.format(int(time.time())))
     doc_ref.set({
         u'username': f['user_name'],
+        u'book_name': f['book_name'],
         u'review_text': f['review_text'],
         u'when': datetime.now(pytz.timezone('Asia/Dhaka')).strftime("%I:%M:%S %p %d %B,%Y")
     })
     return redirect(url_for('go_reviews'))
+
+
+@app.route('/submit_contact_message', methods=['POST'])
+def submit_contact_message():
+    f = request.form
+    doc_ref = db.collection(u'contact-message').document(u'{}'.format(int(time.time())))
+    doc_ref.set({
+        u'username': f['user_name'],
+        u'message_text': f['message_text'],
+        u'when': datetime.now(pytz.timezone('Asia/Dhaka')).strftime("%I:%M:%S %p %d %B,%Y")
+    })
+    return redirect(url_for('go_profile'))
+
+
+@app.route('/admin-login')
+def admin_login():
+    return render_template('admin_login.html')
+
+
+@app.route('/admin-login-submit', methods=['POST'])
+def admin_login_submit():
+    f = request.form
+    print(f.to_dict())
+    if f['email'] == "sowadahmed1963bh@gmail.com" and f['password'] == '12345':
+        session['is_logged_in'] = True
+        return redirect(url_for('see_all_contact_message'))
+
+
+
+@app.route('/see_all_contact_message')
+def see_all_contact_message():
+    if 'is_logged_in' in session.keys() and session['is_logged_in']:
+        users_ref = db.collection(u'contact-message')
+        docs = users_ref.stream()
+        r = [doc.to_dict() for doc in docs]
+        contact_message = [r[i:i + 3] for i in range(0, len(r), 3)]
+        print(contact_message)
+        return render_template('all_contact_message.html', contact_message=contact_message)
+    else:
+        print("not logged in")
+        return redirect(url_for('admin_login'))
