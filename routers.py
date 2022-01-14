@@ -266,7 +266,7 @@ def admin_login():
 def admin_login_submit():
     f = request.form
     print(f.to_dict())
-    if f['email'] == "sowadahmed1963bh@gmail.com" and f['password'] == '12345':
+    if f['email'] == "stl63@gmail.com" and f['password'] == '12345':
         session['is_logged_in'] = True
         return redirect(url_for('see_all_contact_message'))
 
